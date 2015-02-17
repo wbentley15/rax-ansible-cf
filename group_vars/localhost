@@ -1,0 +1,9 @@
+# Here are variables related to the play
+
+dbuser: 
+dbpass: 
+raxcontainer: 
+raxkey: 
+raxuser: 
+raxregion: IAD
+fileloc: 

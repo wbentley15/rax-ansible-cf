@@ -1,0 +1,9 @@
+---
+# This playbook used to backup MySQL databases to RAX Cloud Files. 
+
+- hosts: <add group or host name>
+  user: root
+  remote_user: root
+  sudo: yes
+  roles:
+    - mysql-backup-rax

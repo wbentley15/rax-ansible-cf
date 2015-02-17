@@ -1,0 +1,9 @@
+---
+
+- name: Check if RAX cloud files container exists
+  rax_files: container={{ raxcontainer }} private=yes state=present
+             api_key={{ raxkey }} username={{ raxuser }} region={{ raxregion }}
+      
+- name: Upload file to RAX cloud files container
+  rax_files_objects: container={{ raxcontainer }} method=put src={{ fileloc }}
+                     api_key={{ raxkey }} username={{ raxuser }} region={{ raxregion }}

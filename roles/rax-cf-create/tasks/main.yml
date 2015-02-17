@@ -1,0 +1,5 @@
+---
+
+- name: Create RAX cloud files private container
+  rax_files: container={{ raxcontainer }} private=yes state=present
+             api_key={{ raxkey }} username={{ raxuser }} region={{ raxregion }}

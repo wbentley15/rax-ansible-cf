@@ -1,0 +1,30 @@
+---
+
+- name: Check for backup directory
+  shell: "[ -d /var/backup ]"
+  ignore_errors: True
+  register: result
+
+- name: Create backup directory upon failure
+  shell: mkdir /var/backup
+  when: result|failed
+
+- name: Perform MySQL backup (all databases)
+  shell: chdir=/usr/bin mysqldump -u {{ dbuser }} --password={{ dbpass }} 
+         --all-databases | gzip > /var/backup/{{ inventory_hostname }}.{{ lookup('pipe','date +"%Y-%m-%d-%H%M"') }}.sql.gz
+
+- name: Upload backup file to RAX cloud container
+  rax_files_objects: container={{ raxcontainer }} method=put src=/var/backup
+                     api_key={{ raxkey }} username={{ raxuser }} region={{ raxregion }}
+
+- name: Check for backup/upload directory
+  shell: "[ -d /var/backup/upload ]"
+  ignore_errors: True
+  register: result2
+
+- name: Create backup/upload directory upon failure
+  shell: mkdir /var/backup/upload
+  when: result2|failed
+  
+- name: Move backup file to upload folder
+  shell: mv /var/backup/*.gz /var/backup/upload
